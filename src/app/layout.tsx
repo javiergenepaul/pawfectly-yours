@@ -1,6 +1,6 @@
+import "../styles/globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import "../styles/globals.css";
 import ThemeProviders from "@/components/theme-provider";
 import { META_DATA_TITLE } from "@/config";
 import { Toaster } from "@/components/ui/toaster";
@@ -20,8 +20,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <ThemeProviders>{children}</ThemeProviders>
-        <Toaster />
+        <ThemeProviders>
+          <Toaster />
+          {children}
+        </ThemeProviders>
       </body>
     </html>
   );
