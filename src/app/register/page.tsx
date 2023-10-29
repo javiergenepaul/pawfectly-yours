@@ -1,24 +1,23 @@
-import { Button, Icons } from "@/components";
+import { Icons } from "@/components/icons";
+import { Button } from "@/components/ui/button";
 import { PATHS } from "@/config";
-import { cn } from "@/lib";
-import { Link } from "lucide-react";
-import LoginForm from "./components/login-form";
+import Link from "next/link";
+import React from "react";
+import RegisterForm from "./components/register-form";
 
-interface LoginProps extends React.HTMLAttributes<HTMLDivElement> {}
-
-export default function Login({ className, ...props }: LoginProps) {
+export default function Register() {
   return (
     <>
       <div className="flex flex-col space-y-2 text-center">
         <h1 className="text-2xl font-semibold tracking-tight">
-          Log in to you Account
+          Create Account
         </h1>
         <p className="text-sm text-muted-foreground">
-          Wellcome back! Select method to log in
+          Enter your email below to create your account
         </p>
       </div>
 
-      <div className={cn("grid gap-6", className)} {...props}>
+      <div className={"grid gap-6"}>
         <div className="flex gap-2">
           <Button className="w-full" variant="outline" type="button">
             <Icons.gitHub className="mr-2 h-4 w-4" />
@@ -41,16 +40,34 @@ export default function Login({ className, ...props }: LoginProps) {
           </div>
         </div>
 
-        <LoginForm />
+        <RegisterForm />
       </div>
 
-      <p className="text-sm text-muted-foreground text-center">
-        Don't have an account?{" "}
+      <p className="px-8 text-center text-sm text-muted-foreground">
+        By clicking continue, you agree to our{" "}
         <Link
-          href={PATHS.REGISTER}
+          href={PATHS.TERMS}
+          className="underline underline-offset-4 hover:text-primary"
+        >
+          Terms of Service
+        </Link>{" "}
+        and{" "}
+        <Link
+          href={PATHS.PRIVACY_POLICY}
+          className="underline underline-offset-4 hover:text-primary"
+        >
+          Privacy Policy
+        </Link>
+        .
+      </p>
+
+      <p className="text-sm text-muted-foreground text-center pt-8">
+        Already have an account?{" "}
+        <Link
+          href={PATHS.LOGIN}
           className="font-semibold  hover:text-primary hover:underline hover:underline-offset-4"
         >
-          Sign Up Now
+          Login Now
         </Link>
       </p>
     </>

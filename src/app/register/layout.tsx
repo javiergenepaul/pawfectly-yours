@@ -4,11 +4,11 @@ import { Metadata } from "next";
 import React from "react";
 
 export const metadata: Metadata = {
-  title: `${META_DATA_TITLE} - Login`,
+  title: `${META_DATA_TITLE} - Register`,
   description: "Your One-Stop Destination for Premium Pet Supplies",
 };
 
-export default function LoginLayout({
+export default function RegisterLayout({
   children,
 }: {
   children: React.ReactNode;

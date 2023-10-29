@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { ModeToggle } from "./ui/mode-toggle";
 
-export default function Nav() {
+export default function NavigationBar() {
   return (
     <header className="w-full">
       <nav>

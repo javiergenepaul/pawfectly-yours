@@ -1,10 +1,10 @@
-import Nav from "@/components/Nav";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components";
+import NavigationBar from "@/components/navigation-bar";
 
 export default function Home() {
   return (
     <main className="flex p-12 flex-col h-screen">
-      <Nav />
+      <NavigationBar />
       <section className="py-24 flex flex-col gap-8">
         <h1 className="text-foreground">Title</h1>
         <p className="text-foreground">Sample</p>
