@@ -1,8 +1,9 @@
-import { Button, Icons } from "@/components";
 import { PATHS } from "@/config";
 import { cn } from "@/lib";
-import { Link } from "lucide-react";
 import LoginForm from "./components/login-form";
+import { Icons } from "@/components";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 interface LoginProps extends React.HTMLAttributes<HTMLDivElement> {}
 

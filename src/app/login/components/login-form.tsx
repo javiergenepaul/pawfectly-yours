@@ -8,7 +8,7 @@ import { Label } from "@/components/ui/label";
 import { useToast } from "@/components/ui/use-toast";
 import { PATHS } from "@/config";
 import Link from "next/link";
-import React, { useState } from "react";
+import { useState } from "react";
 
 export default function LoginForm() {
   const [isLoading, setIsLoading] = useState<boolean>(false);

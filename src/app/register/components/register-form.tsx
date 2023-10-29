@@ -1,6 +1,10 @@
 "use client";
 
-import { useToast, Input, Button, Icons, Label } from "@/components";
+import { Icons } from "@/components";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { useToast } from "@/components/ui/use-toast";
 import React from "react";
 
 export default function RegisterForm() {
