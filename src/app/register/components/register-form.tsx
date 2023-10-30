@@ -38,7 +38,7 @@ export default function RegisterForm() {
             autoCapitalize="none"
             autoComplete="email"
             autoCorrect="off"
-            disabled={isLoading}
+            readOnly={isLoading}
           />
         </div>
         <div className="grid gap-1">
@@ -52,7 +52,7 @@ export default function RegisterForm() {
             autoCapitalize="none"
             autoComplete="password"
             autoCorrect="off"
-            disabled={isLoading}
+            readOnly={isLoading}
           />
         </div>
         <div className="grid gap-1">
@@ -66,13 +66,13 @@ export default function RegisterForm() {
             autoCapitalize="none"
             autoComplete="password"
             autoCorrect="off"
-            disabled={isLoading}
+            readOnly={isLoading}
           />
         </div>
 
         <Button disabled={isLoading}>
           {isLoading && <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />}
-          Login
+          Sign Up
         </Button>
       </div>
     </form>
