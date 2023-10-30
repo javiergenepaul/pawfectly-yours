@@ -15,10 +15,8 @@ export default function RegisterLayout({
 }) {
   return (
     <AuthContainer
-      imageSrc={"/examples/authentication-light.png"}
-      imageAlt={"Authentication"}
-      darkImageSrc={"/examples/authentication-light.png"}
-      darkImageAlt={"Authentication"}
+      imageSrc={"https://source.unsplash.com/900x900/?pets&id=1"}
+      imageAlt={"login-bg"}
     >
       {children}
     </AuthContainer>
