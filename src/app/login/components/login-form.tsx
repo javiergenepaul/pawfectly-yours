@@ -13,7 +13,6 @@ import { Input } from "@/components/ui/input";
 import { useToast } from "@/components/ui/use-toast";
 import { PATHS } from "@/config";
 import Link from "next/link";
-import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
@@ -21,24 +20,29 @@ import {
   LoginFormSchema,
   defaultLoginForm,
 } from "../validation/login-form-validation";
+import { useLoadingStore } from "@/models";
 
 export default function LoginForm() {
+  const { setLoading } = useLoadingStore();
+  const { toast } = useToast();
+
   const form = useForm<z.infer<typeof LoginFormSchema>>({
     resolver: zodResolver(LoginFormSchema),
     defaultValues: defaultLoginForm,
   });
 
   const onSubmit = (values: z.infer<typeof LoginFormSchema>) => {
-    console.log(values);
-    setIsLoading(true);
-    toast({
-      variant: "destructive",
-      description:
-        "Oops. There is something wrong with the server, please try again later.",
-    });
+    setLoading(true);
+
+    setTimeout(() => {
+      toast({
+        variant: "destructive",
+        description:
+          "Oops. There is something wrong with the server, please try again later.",
+      });
+      setLoading(false);
+    }, 3000);
   };
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const { toast } = useToast();
 
   return (
     <Form {...form}>

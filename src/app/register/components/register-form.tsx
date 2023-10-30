@@ -1,19 +1,19 @@
 "use client";
 
-import { Icons } from "@/components";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/components/ui/use-toast";
+import { useLoadingStore } from "@/models";
 import React from "react";
 
 export default function RegisterForm() {
-  const [isLoading, setIsLoading] = React.useState<boolean>(false);
+  const { setLoading } = useLoadingStore();
   const { toast } = useToast();
 
   async function onSubmit(event: React.SyntheticEvent) {
     event.preventDefault();
-    setIsLoading(true);
+    setLoading(true);
 
     setTimeout(() => {
       toast({
@@ -21,9 +21,10 @@ export default function RegisterForm() {
         description:
           "Oops. There is something wrong with the server, please try again later.",
       });
-      setIsLoading(false);
+      setLoading(false);
     }, 3000);
   }
+
   return (
     <form onSubmit={onSubmit}>
       <div className="grid gap-4">
@@ -38,7 +39,6 @@ export default function RegisterForm() {
             autoCapitalize="none"
             autoComplete="email"
             autoCorrect="off"
-            readOnly={isLoading}
           />
         </div>
         <div className="grid gap-1">
@@ -52,7 +52,6 @@ export default function RegisterForm() {
             autoCapitalize="none"
             autoComplete="password"
             autoCorrect="off"
-            readOnly={isLoading}
           />
         </div>
         <div className="grid gap-1">
@@ -66,14 +65,10 @@ export default function RegisterForm() {
             autoCapitalize="none"
             autoComplete="password"
             autoCorrect="off"
-            readOnly={isLoading}
           />
         </div>
 
-        <Button disabled={isLoading}>
-          {isLoading && <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />}
-          Sign Up
-        </Button>
+        <Button hasLoadingFeedback>Sign Up</Button>
       </div>
     </form>
   );
