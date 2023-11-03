@@ -2,7 +2,7 @@
 import { useLoadingStore } from "@/models";
 import React from "react";
 
-export default function LoadingMask({ isLoading }: { isLoading: boolean }) {
+export default function LoadingMask({ isLoading }: { isLoading?: boolean }) {
   const { loading } = useLoadingStore();
 
   if (loading || isLoading) {

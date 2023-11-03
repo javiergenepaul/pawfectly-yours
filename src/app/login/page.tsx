@@ -1,9 +1,10 @@
+"use client";
+
 import { PATHS } from "@/config";
 import { cn } from "@/lib";
 import LoginForm from "./components/login-form";
-import { Icons } from "@/components";
-import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import LoginAuthBtn from "./components/login-auth-btn";
 
 interface LoginProps extends React.HTMLAttributes<HTMLDivElement> {}
 
@@ -20,17 +21,7 @@ export default function Login({ className, ...props }: LoginProps) {
       </div>
 
       <div className={cn("grid gap-6", className)} {...props}>
-        <div className="flex gap-2">
-          <Button className="w-full" variant="outline" type="button">
-            <Icons.gitHub className="mr-2 h-4 w-4" />
-            Google
-          </Button>
-          <Button className="w-full" variant="outline" type="button">
-            <Icons.gitHub className="mr-2 h-4 w-4" />
-            Facebook
-          </Button>
-        </div>
-
+        <LoginAuthBtn />
         <div className="relative">
           <div className="absolute inset-0 flex items-center">
             <span className="w-full border-t" />

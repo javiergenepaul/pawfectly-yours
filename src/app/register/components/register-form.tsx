@@ -1,75 +1,119 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormMessage,
+} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { useToast } from "@/components/ui/use-toast";
+import { PATHS } from "@/config";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+
+import { Icons } from "@/components";
+import { signIn } from "next-auth/react";
+import {
+  RegisterFormSchema,
+  RegisterRequestInterface,
+  defaultRegisterForm,
+} from "../validation/register-form-validation";
 import { useLoadingStore } from "@/models";
-import React from "react";
 
 export default function RegisterForm() {
   const { setLoading } = useLoadingStore();
-  const { toast } = useToast();
 
-  async function onSubmit(event: React.SyntheticEvent) {
-    event.preventDefault();
+  const form = useForm<RegisterRequestInterface>({
+    resolver: zodResolver(RegisterFormSchema),
+    defaultValues: defaultRegisterForm,
+  });
+
+  const handleOnSubmit = async (values: RegisterRequestInterface) => {
     setLoading(true);
 
-    setTimeout(() => {
-      toast({
-        variant: "destructive",
-        description:
-          "Oops. There is something wrong with the server, please try again later.",
-      });
-      setLoading(false);
-    }, 3000);
-  }
+    await signIn("register", {
+      email: values.email,
+      password: values.password,
+      callbackUrl: PATHS.MAIN,
+    });
+  };
 
   return (
-    <form onSubmit={onSubmit}>
-      <div className="grid gap-4">
-        <div className="grid gap-1">
-          <Label className="sr-only" htmlFor="email">
-            Email
-          </Label>
-          <Input
-            id="email"
-            placeholder="Email"
-            type="email"
-            autoCapitalize="none"
-            autoComplete="email"
-            autoCorrect="off"
+    <>
+      <Form {...form}>
+        <form
+          className="grid gap-4"
+          onSubmit={form.handleSubmit(handleOnSubmit)}
+        >
+          <FormField
+            control={form.control}
+            name="email"
+            render={({ field, fieldState }) => (
+              <FormItem>
+                <FormControl>
+                  <Input
+                    hasError={fieldState.invalid}
+                    placeholder="Email"
+                    autoCapitalize="none"
+                    autoComplete="off"
+                    autoCorrect="off"
+                    type="text"
+                    suffix={<Icons.mail />}
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
           />
-        </div>
-        <div className="grid gap-1">
-          <Label className="sr-only" htmlFor="email">
-            Password
-          </Label>
-          <Input
-            id="password"
-            placeholder="Password"
-            type="password"
-            autoCapitalize="none"
-            autoComplete="password"
-            autoCorrect="off"
+          <FormField
+            control={form.control}
+            name="password"
+            render={({ field, fieldState }) => (
+              <FormItem>
+                <FormControl>
+                  <Input
+                    hasError={fieldState.invalid}
+                    placeholder="Password"
+                    autoCapitalize="none"
+                    autoComplete="off"
+                    autoCorrect="off"
+                    type="password"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
           />
-        </div>
-        <div className="grid gap-1">
-          <Label className="sr-only" htmlFor="email">
-            Confirm Password
-          </Label>
-          <Input
-            id="confirmPassword"
-            placeholder="Confirm Password"
-            type="password"
-            autoCapitalize="none"
-            autoComplete="password"
-            autoCorrect="off"
+          <FormField
+            control={form.control}
+            name="confirmPassword"
+            render={({ field, fieldState }) => (
+              <FormItem>
+                <FormControl>
+                  <Input
+                    hasError={fieldState.invalid}
+                    placeholder="Confirm Password"
+                    autoCapitalize="none"
+                    autoComplete="off"
+                    autoCorrect="off"
+                    type="password"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
           />
-        </div>
 
-        <Button hasLoadingFeedback>Sign Up</Button>
-      </div>
-    </form>
+          <Button hasLoadingFeedback type="submit">
+            Sign Up
+          </Button>
+        </form>
+      </Form>
+    </>
   );
 }

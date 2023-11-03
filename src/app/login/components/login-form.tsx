@@ -10,7 +10,6 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { useToast } from "@/components/ui/use-toast";
 import { PATHS } from "@/config";
 import Link from "next/link";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -18,58 +17,59 @@ import { useForm } from "react-hook-form";
 import {
   LoginFormSchema,
   LoginRequestInterface,
-  testLoginForm,
+  defaultLoginForm,
 } from "../validation/login-form-validation";
-import { useMutation } from "@tanstack/react-query";
-import { loginService } from "@/services";
-import LoadingMask from "@/components/loading-mask";
 import { Icons } from "@/components";
+import { signIn } from "next-auth/react";
+import { useLoadingStore } from "@/models";
+import { useToast } from "@/components/ui/use-toast";
+import { useRouter } from "next/navigation";
 
 export default function LoginForm() {
+  const { setLoading } = useLoadingStore();
   const { toast } = useToast();
-
-  /**
-   * Custom hook that handles a mutation using the provided mutation function and handles
-   * the success and error cases.
-   * @param {Object} options - The options object for the mutation.
-   * @param {Function} options.mutationFn - The mutation function to be called.
-   * @param {LoginRequestInterface} options.formData - The form data to be passed to the mutation function.
-   * @param {Function} options.onSuccess - The function to be called on successful mutation.
-   * @param {Function} options.onError - The function to be called on error during mutation.
-   * @returns None
-   */
-  const mutation = useMutation({
-    mutationFn: (formData: LoginRequestInterface) => loginService(formData),
-    onSuccess: () => {
-      toast({
-        variant: "success",
-        description: "Login Successfully",
-      });
-    },
-    onError: () => {
-      toast({
-        variant: "destructive",
-        description:
-          "Oops. There is something wrong with the server, please try again later.",
-      });
-    },
-  });
+  const router = useRouter();
 
   const form = useForm<LoginRequestInterface>({
     resolver: zodResolver(LoginFormSchema),
-    defaultValues: testLoginForm,
+    defaultValues: defaultLoginForm,
   });
 
-  const onSubmit = (values: LoginRequestInterface) => {
-    mutation.mutate(values);
+  const handleOnSubmit = async (values: LoginRequestInterface) => {
+    setLoading(true);
+    const res = await signIn("credentials", {
+      email: values.email,
+      password: values.password,
+      callbackUrl: PATHS.MAIN,
+      redirect: false,
+    })
+      .catch(() => {
+        toast({
+          variant: "destructive",
+          title: "Invalid Session",
+        });
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+
+    if (res?.error?.startsWith("error on login")) {
+      toast({
+        variant: "destructive",
+        title: "Invalid Credentials",
+      });
+    } else if (res?.status === 200) {
+      router.push(PATHS.MAIN);
+    }
   };
 
   return (
     <>
-      <LoadingMask isLoading={mutation.isPending} />
       <Form {...form}>
-        <div className="">{mutation.data?.resultData.email}</div>
-        <form className="grid gap-4" onSubmit={form.handleSubmit(onSubmit)}>
+        <form
+          className="grid gap-4"
+          onSubmit={form.handleSubmit(handleOnSubmit)}
+        >
           <FormField
             control={form.control}
             name="email"

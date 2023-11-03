@@ -1,16 +1,26 @@
 import { API_URL } from "@/config";
 import axios, { AxiosInstance } from "axios";
+import { getSession } from "next-auth/react";
+import { headers } from "next/headers";
 
 export const axiosInstance: AxiosInstance = axios.create({
   baseURL: API_URL,
   timeout: 5000,
-  headers: {
-    "Content-Type": "application/json",
-  },
 });
 
-// Assuming you have a Bearer token stored in a variable
-// const bearerToken = 'your_bearer_token_here';
+axiosInstance.interceptors.request.use(async (request) => {
+  const session = await getSession();
+  if (session) {
+    request.headers.Authorization = `Bearer ${session.user?.token}`;
+  }
+  return request;
+});
 
-// Add the Bearer token to the headers of the Axios instance
-// axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${bearerToken}`;
+axiosInstance.interceptors.response.use(
+  (response) => {
+    return response;
+  },
+  (error) => {
+    console.log(`error`, error);
+  }
+);
