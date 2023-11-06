@@ -53,14 +53,16 @@ export default function LoginForm() {
         setLoading(false);
       });
 
-    if (res?.error?.startsWith("error on login")) {
-      toast({
-        variant: "destructive",
-        title: "Invalid Credentials",
-      });
-    } else if (res?.status === 200) {
-      router.push(PATHS.MAIN);
-    }
+    console.log(res);
+
+    // if (res?.error?.startsWith("error on login")) {
+    //   toast({
+    //     variant: "destructive",
+    //     title: "Invalid Credentials",
+    //   });
+    // } else if (res?.status === 200) {
+    //   router.push(PATHS.MAIN);
+    // }
   };
 
   return (
@@ -143,9 +145,7 @@ export default function LoginForm() {
               </FormItem>
             )}
           />
-          <Button hasLoadingFeedback type="submit">
-            Login
-          </Button>
+          <Button type="submit">Login</Button>
         </form>
       </Form>
     </>

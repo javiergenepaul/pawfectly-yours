@@ -2,13 +2,19 @@ import { LoginRequestInterface } from "@/app/login/validation/login-form-validat
 import { axiosInstance } from "..";
 import { API_URL, ApiResultModel } from "@/config";
 
-const AUTH_URL: string = "api/auth";
+const AUTH_URL: string = "/api/auth";
 
 const loginService = async (
   formData: LoginRequestInterface
 ): Promise<ApiResultModel<any>> => {
-  const response = await axiosInstance.post(`${API_URL}/login`, formData);
-  return response.data;
+  return axiosInstance
+    .post(`${AUTH_URL}/login`, formData)
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      return error;
+    });
 };
 
 const loginUsingProvider = async (

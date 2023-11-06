@@ -1,10 +1,17 @@
 import { LoginProviderEnum } from "./enum";
 
+declare module 'next-auth/jwt' {
+  interface JWT {
+    id: string;
+    token: string;
+  }
+}
+
 declare module "next-auth" {
   interface Session {
     user: UserInterface;
     provider: LoginProviderEnum;
-    error?: "error";
+    error?: string;
   }
 }
 
@@ -12,6 +19,7 @@ export interface ApiResultModel<T> {
   status: number;
   resultData: T;
   message: string;
+  errors: any;
 }
 
 export interface UserInterface {

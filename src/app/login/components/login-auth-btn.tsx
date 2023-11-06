@@ -6,14 +6,20 @@ import { Icons } from "@/components";
 import { Button } from "@/components/ui/button";
 import { PATHS } from "@/config";
 import { useLoadingStore } from "@/models";
+import { useToast } from "@/components/ui/use-toast";
 
 export default function LoginAuthBtn() {
   const { setLoading } = useLoadingStore();
+  const { toast } = useToast();
 
   const handleGithubSignIn = async () => {
     setLoading(true);
     signIn("github", { callbackUrl: PATHS.MAIN }).catch(() => {
       setLoading(false);
+      toast({
+        variant: "destructive",
+        title: "Invalid Session",
+      });
     });
   };
 
@@ -21,6 +27,10 @@ export default function LoginAuthBtn() {
     setLoading(true);
     signIn("google", { callbackUrl: PATHS.MAIN }).catch(() => {
       setLoading(false);
+      toast({
+        variant: "destructive",
+        title: "Invalid Session",
+      });
     });
   };
 
